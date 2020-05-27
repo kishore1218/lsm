@@ -2,6 +2,7 @@ package cb.lms.CB_Lms.to;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Date;
 
 import cb.lms.CB_Lms.util.BusinessUtils;
@@ -55,11 +56,14 @@ public class DayworkTo implements Serializable{
 		LocalDate localDate = BusinessUtils.toLocalDate(this.date);
 		int day = localDate.getDayOfMonth();
 		String weekDay = localDate.getDayOfWeek().name();
+		
+		String sufix=weekDay.substring(1, weekDay.length()).toLowerCase();
 
 		StringBuilder sb = new StringBuilder();
-		sb.append(day);
+		sb.append(BusinessUtils.numberOrdinal(day));
 		sb.append(" ");
-		sb.append(weekDay);
+		sb.append(weekDay.substring(0,1));
+		sb.append(sufix);
 
 
 		return sb.toString();
@@ -72,6 +76,8 @@ public class DayworkTo implements Serializable{
 	public void setDate(Date date) {
 		this.date = date;
 	}
+	
+	
 	
 
 }

@@ -23,6 +23,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -76,6 +78,7 @@ public class AppConfig {
 		return new PersistenceExceptionTranslationPostProcessor();
 	}
 	
+	
 //	@Bean
 //    public WebMvcConfigurer corsConfigurer() {
 //        return new WebMvcConfigurerAdapter() {
@@ -103,7 +106,7 @@ public class AppConfig {
 	        CorsConfiguration config = new CorsConfiguration();
 	        config.applyPermitDefaultValues();
 	        config.setAllowCredentials(true);
-	        config.setAllowedOrigins(Arrays.asList("http://lms-ui-git-cc-tsm.apps.us-east-1.starter.openshift-online.com"));
+	        config.setAllowedOrigins(Arrays.asList("http://192.168.1.5:3000"));
 	        config.setAllowedHeaders(Arrays.asList("*"));
 	        config.setAllowedMethods(Arrays.asList("*"));
 	        config.setExposedHeaders(Arrays.asList("content-length"));

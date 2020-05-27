@@ -18,6 +18,8 @@ public class TimesheetTo implements Serializable{
 	
 	Date submittedDate;
 	
+	String comments;
+	
 	List<DayworkTo> dayswork;
 
 	public Integer getId() {
@@ -74,6 +76,14 @@ public class TimesheetTo implements Serializable{
 
 	public void setPeriod(String period) {
 		this.period = period;
+	}
+
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
 	}
 
 }

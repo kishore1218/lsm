@@ -1,18 +1,31 @@
 package cb.lms.CB_Lms.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import cb.lms.CB_Lms.modal.DesciplineAcademic;
+import cb.lms.CB_Lms.modal.Discipline;
 import cb.lms.CB_Lms.modal.Faculty;
 import cb.lms.CB_Lms.modal.FacultyAcademics;
 import cb.lms.CB_Lms.service.AcademicDisciplineService;
@@ -27,7 +40,9 @@ public class AcademicDisciplineController {
 	@Autowired
 	ICommonService service;
 
-	
+	@Value("${ga.lms.syllabus.upload.dir}")
+	String uploaddir;
+
 	/**
 	 * 
 	 * @param dispId
@@ -51,7 +66,6 @@ public class AcademicDisciplineController {
 		return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
 	}
 
-	
 	@DeleteMapping("/Ga/facultyacademic/{facultyId}/{dispacaId}")
 	public ResponseEntity<Void> deleteFacultyAcademic(@PathVariable("facultyId") Integer facultyId,
 			@PathVariable("dispacaId") Integer dispacaId) {
@@ -68,7 +82,7 @@ public class AcademicDisciplineController {
 
 		return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
 	}
-	
+
 	/**
 	 * 
 	 * @param dispId
@@ -92,10 +106,7 @@ public class AcademicDisciplineController {
 
 		return new ResponseEntity<DesciplineAcademic>(HttpStatus.OK);
 	}
-	
 
-
-	
 	/**
 	 * 
 	 * @param facultyId
@@ -131,6 +142,49 @@ public class AcademicDisciplineController {
 		}
 
 		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+
+	@PostMapping(value = "/upload/{disciplineId}")
+	public ResponseEntity<Void> uploadFile(@PathVariable("disciplineId") Integer disciplineId,
+			@RequestParam("file") MultipartFile file) throws IOException {
+		System.out.println(String.format("File name '%s' uploaded successfully.", file.getOriginalFilename()));
+
+		String fileName = file.getOriginalFilename();
+		String url = uploaddir + fileName;
+		FileOutputStream fos = null;
+		try {
+			File fileToSave = new File(url);
+			fileToSave.createNewFile();
+			fos = new FileOutputStream(fileToSave);
+			fos.write(file.getBytes());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<Void>(HttpStatus.NOT_ACCEPTABLE);
+		} finally {
+			if (fos != null) {
+				fos.close();
+			}
+		}
+
+		Discipline disp = (Discipline) service.findEntity(Discipline.class, "id", disciplineId);
+		disp.setSyllabusFile(fileName);
+		service.saveEntity(disp);
+
+		return ResponseEntity.ok().build();
+	}
+
+	@GetMapping("/download/{fileName}")
+	public ResponseEntity downloadFile1(@PathVariable("fileName") String fileName) throws IOException {
+
+		String url = uploaddir + fileName;
+		File file = new File(url);
+		InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + file.getName())
+				.contentType(MediaType.APPLICATION_OCTET_STREAM).contentLength(file.length()).body(resource);
+		
+		
+		
 	}
 
 }

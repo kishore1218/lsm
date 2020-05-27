@@ -26,7 +26,10 @@ public class Discipline implements IDataEntity{
 	private String name;
 
 	@Column(name = "DESC", nullable = true)
-	private String desc;	
+	private String desc;
+	
+	@Column(name = "SYLLABUS_FILE", nullable = true)
+	private String syllabusFile;
 	
 	
 	@ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
@@ -67,6 +70,15 @@ public class Discipline implements IDataEntity{
 
 	public void setAcademics(List<AcademicYear> academics) {
 		this.academics = academics;
+	}
+
+	public String getSyllabusFile() {
+		return syllabusFile;
+	}
+
+	public void setSyllabusFile(String fileName) {
+		this.syllabusFile = fileName;
+		
 	}
 
 }

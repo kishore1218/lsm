@@ -51,6 +51,9 @@ public class TimeSheet implements IDataEntity {
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "TIME_SHEET_ID")
 	List<DayWork> dayWorks;
+	
+	@Column(name = "COMMENTS", nullable = true)
+	String comments;
 
 	public Integer getId() {
 		return id;
@@ -120,6 +123,14 @@ public class TimeSheet implements IDataEntity {
 	public String getPeriod() {
 
 		return BusinessUtils.formatDate(this.startDate) + "  -  " + BusinessUtils.formatDate(this.endDay);
+	}
+
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
 	}
 
 }

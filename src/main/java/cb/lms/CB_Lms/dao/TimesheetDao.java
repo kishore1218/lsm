@@ -45,6 +45,7 @@ public class TimesheetDao extends GenericDao{
 				to.setStatus(timesheet.getStatus());
 				to.setPeriod(timesheet.getPeriod());
 				to.setFacultyId(timesheet.getFaculty().getId());
+				to.setComments(timesheet.getComments());
 				to.setFacultyName(timesheet.getFaculty().getFirstName()+" "+timesheet.getFaculty().getLastName());
 				tos.add(to);
 			});
@@ -71,6 +72,7 @@ public class TimesheetDao extends GenericDao{
 			to.setStatus(timesheet.getStatus());
 			to.setPeriod(timesheet.getPeriod());
 			to.setFacultyId(timesheet.getFaculty().getId());
+			to.setComments(timesheet.getComments());
 			to.setFacultyName(timesheet.getFaculty().getFirstName() + " " + timesheet.getFaculty().getLastName());
 			
 			if(timesheet.getDayWorks()!=null) {
@@ -118,6 +120,7 @@ public class TimesheetDao extends GenericDao{
 				to.setStatus(timesheet.getStatus());
 				to.setPeriod(timesheet.getPeriod());
 				to.setFacultyId(timesheet.getFaculty().getId());
+				to.setComments(timesheet.getComments());
 				to.setFacultyName(timesheet.getFaculty().getFirstName() + " " + timesheet.getFaculty().getLastName());
 				
 				if(timesheet.getDayWorks()!=null) {
@@ -166,6 +169,7 @@ public class TimesheetDao extends GenericDao{
 				to.setStatus(timesheet.getStatus());
 				to.setPeriod(timesheet.getPeriod());
 				to.setFacultyId(timesheet.getFaculty().getId());
+				to.setComments(timesheet.getComments());
 				to.setFacultyName(timesheet.getFaculty().getFirstName()+" "+timesheet.getFaculty().getLastName());
 				tos.add(to);
 			});

@@ -152,6 +152,7 @@ public class TimesheetController {
 			TimeSheet t = (TimeSheet) service.findEntity(TimeSheet.class, "id", timesheet.getId());
 
 			t.setStatus(timesheet.getStatus());
+			t.setComments(timesheet.getComments());
 
 			service.saveEntity(t);
 
